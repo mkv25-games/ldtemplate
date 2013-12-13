@@ -3,6 +3,7 @@ package net.mkv25.game.screens;
 import flash.events.KeyboardEvent;
 import flash.ui.Keyboard;
 import net.mkv25.base.core.Screen;
+import net.mkv25.base.core.Text;
 import net.mkv25.base.ui.BubbleCircleUI;
 import net.mkv25.base.ui.ButtonUI;
 import net.mkv25.base.ui.IconButtonUI;
@@ -35,6 +36,7 @@ class IntroScreen extends Screen
 		
 		text = new TextUI();
 		text.setup("Keys: LEFT, RIGHT, DOWN", 0xFF9933).size(300, 50).center(text.artwork, cast horizontalCenter, 70);
+		text.setText(Text.formatInThousands(1234567890));
 		
 		icon = new IconButtonUI();
 		icon.setup("img/example_icon.png", onIconAction);

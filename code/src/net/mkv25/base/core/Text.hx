@@ -27,4 +27,26 @@ class Text
 		
 		return tf;
 	}
+	
+	public static function formatInThousands(number:Float):String
+	{
+		return numberFormat(number, 0, false, false);
+	}
+	
+	public static function numberFormat(number:Float, maxDecimals:Int=2, forceDecimals:Bool=false, siStyle:Bool=true):String
+	{
+		var i:Int = 0;
+		var inc:Float = Math.pow(10, maxDecimals);
+		var str:String = Std.string(Math.round(inc * number) / inc);
+		var hasSep:Bool = str.indexOf(".") == -1, sep:Int = hasSep ? str.length : str.indexOf(".");
+		var ret:String = (hasSep && !forceDecimals ? "" : (siStyle ? "," : ".")) + str.substr(sep+1);
+		if (forceDecimals) {
+			var limit = maxDecimals - (str.length - (hasSep ? sep - 1 : sep)) + 1;
+			for (j  in 0...limit)
+				ret += "0";
+		}
+		while (i + 3 < (str.substr(0, 1) == "-" ? sep - 1 : sep))
+			ret = (siStyle ? "." : ",") + str.substr(sep - (i += 3), 3) + ret;
+		return str.substr(0, sep - i) + ret;
+	}
 }
