@@ -1,1 +1,3 @@
 bin/
+/deploy/node_modules
+/deploy/.ftppass
