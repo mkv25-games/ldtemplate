@@ -1,0 +1,6 @@
+{
+  "grunt-ludum": {
+    "username": "username",
+	"password": "password"
+  }
+}

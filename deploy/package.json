@@ -1,0 +1,13 @@
+{
+  "name": "mkv25-ludumdare-deployment",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-debug-task": "^0.1.5",
+    "grunt-ftp-deploy": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Markavian/ldtemplate.git"
+  }
+}
