@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
 	// the ludum ID, expressed as lowercase ld##
-	var LDID = "ldxx";
+	var LDID = "ldtemplate";
 
 	// ftp host
 	var FTP_HOST = 'ftp.mkv25.net';
