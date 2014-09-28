@@ -15,7 +15,20 @@ class Money extends CoreModel
 	
 	public function add(amount:Int):Void
 	{
-		value = value + amount;
-		changed.dispatch(this);
+		updateValue(value + amount);
+	}
+	
+	public function subtract(amount:Int):Void
+	{
+		updateValue(value - amount);
+	}
+	
+	function updateValue(newValue:Int):Void
+	{
+		if (newValue != value)
+		{
+			value = newValue;
+			changed.dispatch(this);
+		}
 	}
 }

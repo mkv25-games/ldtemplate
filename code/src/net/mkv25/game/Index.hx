@@ -8,8 +8,6 @@ import net.mkv25.game.screens.IntroScreen;
 
 class Index
 {
-	private static var failsafe:Bool = false;
-	
 	// models
 	public static var exampleModel:CoreModel;
 	
@@ -24,11 +22,7 @@ class Index
 	public static function setup():Void
 	{
 		// prevent method from being executed more then once
-		if (failsafe)
-		{
-			throw "The glass has already been broken.";
-		}
-		failsafe = true;
+		Failsafe.trigger();
 		
 		// models
 		exampleModel = new CoreModel();
