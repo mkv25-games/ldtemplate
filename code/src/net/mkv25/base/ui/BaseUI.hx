@@ -6,6 +6,9 @@ import motion.Actuate;
 import motion.actuators.GenericActuator.IGenericActuator;
 import motion.easing.Elastic;
 import motion.easing.Quad;
+import net.mkv25.game.Index;
+import openfl.display.DisplayObjectContainer;
+import openfl.geom.Point;
 
 class BaseUI 
 {
@@ -25,6 +28,16 @@ class BaseUI
 	{
 		artwork.x = x;
 		artwork.y = y;
+		
+		return this;
+	}
+	
+	public function moveToMouse():BaseUI
+	{
+		if (artwork.parent != null)
+		{
+			move(artwork.parent.mouseX, artwork.parent.mouseY);
+		}
 		
 		return this;
 	}
@@ -49,12 +62,18 @@ class BaseUI
 		return this;
 	}
 	
+	public function addTo(container:DisplayObjectContainer):BaseUI
+	{
+		container.addChild(this.artwork);
+		
+		return this;
+	}
+	
 	public function center(image:DisplayObject, offsetX:Int=0, offsetY:Int=0):Void
 	{
 		image.x = - Math.round(image.width / 2) + offsetX;
 		image.y = - Math.round(image.height / 2) + offsetY;
 	}
-	
 	
 	public function enable()
 	{
@@ -85,26 +104,56 @@ class BaseUI
 	// animations
 	public function zoomOut():IGenericActuator
 	{
-		Actuate.apply(artwork, { alpha: 1.0, scaleX: 1.0, scaleY: 1.0 } ).ease(Quad.easeOut);
+		Actuate.apply(artwork, { alpha: 1.0, scaleX: 1.0, scaleY: 1.0 } );
 		return Actuate.tween(artwork, 0.6, { alpha: 0.0, scaleX: 2.0, scaleY: 2.0 } ).onComplete(hide);
 	}
 	
 	public function zoomIn():IGenericActuator
 	{
-		Actuate.apply(artwork, { alpha: 0.0, scaleX: 2.0, scaleY: 2.0 } ).ease(Quad.easeIn);
+		Actuate.apply(artwork, { alpha: 0.0, scaleX: 2.0, scaleY: 2.0 } );
 		return Actuate.tween(artwork, 0.6, { alpha: 1.0, scaleX: 1.0, scaleY: 1.0 } );
 	}
 	
 	public function popIn():IGenericActuator
 	{
-		Actuate.apply(artwork, { alpha: 0.0, scaleX: 0.5, scaleY: 0.5 } ).ease(Elastic.easeIn);
+		Actuate.apply(artwork, { alpha: 0.0, scaleX: 0.5, scaleY: 0.5 } );
 		return Actuate.tween(artwork, 0.6, { alpha: 1.0, scaleX: 1.0, scaleY: 1.0 } );
 	}
 	
 	public function popOut():IGenericActuator
 	{
-		Actuate.apply(artwork, { alpha: 1.0, scaleX: 1.0, scaleY: 1.0 } ).ease(Elastic.easeOut);
+		Actuate.apply(artwork, { alpha: 1.0, scaleX: 1.0, scaleY: 1.0 } );
 		return Actuate.tween(artwork, 0.6, { alpha: 0.0, scaleX: 0.5, scaleY: 0.5 } );
+	}
+	
+	private static var p1 = new Point();
+	private static var p2 = new Point();
+	public function moveBetween(source:BaseUI, target:BaseUI, animationLength:Float=0.8, delayTime:Float=0.0):IGenericActuator
+	{
+		if (artwork.stage == null)
+		{
+			return null;
+		}
+		
+		var scale:Float = Index.screenController.scale;
+		
+		p1.x = 0;
+		p1.y = 0;
+		p1 = source.artwork.localToGlobal(p1);
+		p1.setTo(p1.x / scale, p1.y / scale);
+		
+		p2.x = 0;
+		p2.y = 0;
+		p2 = target.artwork.localToGlobal(p2);
+		p2.setTo(p2.x / scale, p2.y / scale);
+		
+		move(p1.x, p1.y);
+		
+		var targetx = artwork.x + (p2.x - p1.x);
+		var targety = artwork.y + (p2.y - p1.y);
+		
+		Actuate.tween(artwork, animationLength, { x: targetx } ).ease(Quad.easeIn).delay(delayTime);
+		return Actuate.tween(artwork, animationLength, { y: targety }, false ).ease(Quad.easeOut).delay(delayTime);
 	}
 	
 	// properties

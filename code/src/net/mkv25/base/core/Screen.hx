@@ -9,8 +9,8 @@ import openfl.Assets;
 
 class Screen
 {
-	public static var WIDTH:Int = 800;
-	public static var HEIGHT:Int = 500;
+	public static var WIDTH:Int = 500;
+	public static var HEIGHT:Int = 800;
 	
 	public var artwork:Sprite;
 

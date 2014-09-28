@@ -7,6 +7,7 @@ import flash.display.Sprite;
 import flash.display.Stage;
 import flash.events.Event;
 import motion.Actuate;
+import net.mkv25.base.ui.TintUI;
 
 class ScreenController 
 {
@@ -15,6 +16,7 @@ class ScreenController
 	
 	var stage:Stage;
 	
+	var backgroundTint:Sprite;
 	var zoomContainer:Sprite;
 	var screenLayer:Sprite;
 	
@@ -40,6 +42,9 @@ class ScreenController
 		while (screens.length > 0)
 			screens.pop();
 		
+		backgroundTint = TintUI.createTint(0x555555, 1.0, Screen.WIDTH, Screen.HEIGHT);
+		zoomContainer.addChild(backgroundTint);
+			
 		zoomContainer.addChild(screenLayer);
 		stage.addChild(zoomContainer);
 		
@@ -69,18 +74,18 @@ class ScreenController
 	
 	public function updateScreenSize()
 	{
-		var expectedWidth:Int = 960;
-		var actualWidth:Int = cast stage.stageWidth;
+		var expectedHeight:Int = 800;
+		var actualHeight:Int = cast stage.stageHeight;
 		
-		var startScale = zoomContainer.scaleX;
+		var startScale = zoomContainer.scaleY;
 		var idealScale:Float;
 		
 		// scale to fit
-		zoomContainer.width = stage.stageWidth;
-		zoomContainer.scaleY = zoomContainer.scaleX;
+		zoomContainer.height = stage.stageHeight;
+		zoomContainer.scaleX = zoomContainer.scaleY;
 		
 		// set ideal scaling
-		idealScale = zoomContainer.scaleX;
+		idealScale = zoomContainer.scaleY;
 		
 		// animate scale
 		if (idealScale != startScale)
@@ -138,6 +143,8 @@ class ScreenController
 			screenHistory.push(currentScreen);
 		
 		currentScreen = screen;
+		
+		updateScreenSize();
 	}
 	
 	public function showNextScreen():Void

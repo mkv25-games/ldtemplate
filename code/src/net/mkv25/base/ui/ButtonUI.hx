@@ -8,6 +8,7 @@ import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormatAlign;
+import openfl.events.Event;
 
 class ButtonUI extends BaseUI 
 {
@@ -25,7 +26,7 @@ class ButtonUI extends BaseUI
 		super();
 		
 		bitmap = new Bitmap();
-		textField = Text.makeTextField("fonts/alegreya-regular.ttf", 26, 0x333333, TextFormatAlign.CENTER);
+		textField = Text.makeTextField("fonts/trebuc.ttf", 24, 0xFFFFFF, TextFormatAlign.CENTER);
 		assetPrefix = DEFAULT_ASSET_PREFIX;
 		
 		waitingOnActivation = false;
@@ -35,6 +36,8 @@ class ButtonUI extends BaseUI
 		artwork.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 		artwork.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		artwork.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+		
+		artwork.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 	
 	public function setup(label:String, action:Dynamic->Void, assetPrefix:String=DEFAULT_ASSET_PREFIX):Void
@@ -45,28 +48,27 @@ class ButtonUI extends BaseUI
 		artwork.addChild(bitmap);
 		artwork.addChild(textField);
 		
-		textField.text = label;		
-		updateLabelSize();
+		textField.text = label;
 		
 		upState();
 	}
 	
 	function updateLabelSize()
 	{
+		textField.height = textField.textHeight + 5;
 		if (bitmap == null)
 		{
 			textField.width = 100;
-			textField.height = 30;
 		}
 		else
 		{
 			textField.width = bitmap.width;
-			textField.height = bitmap.height;
 		}
 		center(textField);
 	}
 	
-	function activate():Void {
+	function activate():Void
+	{
 		if (waitingOnActivation)
 			return;
 			
@@ -77,7 +79,8 @@ class ButtonUI extends BaseUI
 		Actuate.timer(0.1).onComplete(onActivationComplete);
 	}
 	
-	function onActivationComplete():Void {
+	function onActivationComplete():Void
+	{
 		action(this);
 		waitingOnActivation = false;
 	}
@@ -110,6 +113,11 @@ class ButtonUI extends BaseUI
 		bitmap.bitmapData = Assets.getBitmapData(assetPrefix + "_down.png");
 		center(bitmap);
 		updateLabelSize();
+	}
+	
+	function onAddedToStage(e)
+	{
+		upState();
 	}
 	
 	function onMouseOver(e)

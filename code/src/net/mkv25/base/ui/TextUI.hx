@@ -21,7 +21,7 @@ class TextUI extends BaseUI
 	public function setup(label:String, color:Int=0x136713)
 	{
 		if (text == null)
-			text = Text.makeTextField("fonts/alegreya-regular.ttf", 22, color, TextFormatAlign.CENTER, false);
+			text = Text.makeTextField("fonts/trebuc.ttf", 22, color, TextFormatAlign.CENTER, false);
 		
 		setText(label);
 		artwork.addChild(text);
@@ -48,6 +48,26 @@ class TextUI extends BaseUI
 		text.setTextFormat(format);
 		
 		return this;
+	}
+	
+	public function alignLeft():TextUI
+	{
+		return align(TextFormatAlign.LEFT);
+	}
+	
+	public function alignRight():TextUI
+	{
+		return align(TextFormatAlign.RIGHT);
+	}
+	
+	public function alignCenter():TextUI
+	{
+		return align(TextFormatAlign.CENTER);
+	}
+	
+	public function alignJustify():TextUI
+	{
+		return align(TextFormatAlign.JUSTIFY);
 	}
 	
 	public function fontSize(size:Float):TextUI
